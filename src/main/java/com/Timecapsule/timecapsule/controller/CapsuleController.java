@@ -13,36 +13,38 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.Timecapsule.timecapsule.models.User;
-import com.Timecapsule.timecapsule.repository.UserRepository;
+import com.Timecapsule.timecapsule.models.Capsule;
+import com.Timecapsule.timecapsule.repository.CapsuleRepository;
 
 @RestController
-@RequestMapping("/api/users")
-@CrossOrigin(origins = "*") // permite que se acceda desde cualquier origen
-public class UserController {
+@RequestMapping("/api/capsules")
+@CrossOrigin(origins = "*") 
+public class CapsuleController {
 
   @Autowired
-  private UserRepository UserRepo;
+  private CapsuleRepository CapsuleRepo;
 
-  @GetMapping()
-  public List<User> getUsers() {
-    return UserRepo.findAll();
+  @GetMapping
+  public List<Capsule> getCapsules() {
+    return CapsuleRepo.findAll();
   }
 
-  @PostMapping()
-  public User create(@RequestBody User u) {
-    return UserRepo.save(u);
+  @PostMapping
+  public Capsule create(@RequestBody Capsule c) {
+    return CapsuleRepo.save(c);
   }
 
   @PutMapping("/{id}")
-  public User updateUser(@PathVariable Long id, @RequestBody User u) {
-    u.setId(id);
-    return UserRepo.save(u);
+  public Capsule updateCapsule(@PathVariable Long id, @RequestBody Capsule c) {
+    c.setId(id);
+    return CapsuleRepo.save(c);
   }
 
   @DeleteMapping("/{id}")
-  public void deleteUser(@PathVariable Long id) {
-    UserRepo.deleteById(id);
+  public void deleteCapsule(@PathVariable Long id) {
+    CapsuleRepo.deleteById(id);
   }
-
 }
+
+  
+
