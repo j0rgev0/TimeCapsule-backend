@@ -1,6 +1,7 @@
 package com.Timecapsule.timecapsule.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -35,7 +36,7 @@ public class UserController {
   }
 
   @PutMapping("/{id}")
-  public User updateUser(@PathVariable Long id, @RequestBody User u) {
+  public User updateUser(@PathVariable UUID id, @RequestBody User u) {
     u.setId(id);
     return UserRepo.save(u);
   }
