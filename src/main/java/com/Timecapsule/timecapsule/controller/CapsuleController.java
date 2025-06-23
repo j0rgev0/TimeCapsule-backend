@@ -42,7 +42,7 @@ public class CapsuleController {
   }
 
   @DeleteMapping("/{id}")
-  public void deleteCapsule(@PathVariable Long id) {
+  public void deleteCapsule(@PathVariable UUID id) {
     CapsuleRepo.deleteById(id);
   }
 }
