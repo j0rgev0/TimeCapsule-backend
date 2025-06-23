@@ -2,7 +2,7 @@ package com.Timecapsule.timecapsule.services;
 
 import java.util.UUID;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.Timecapsule.timecapsule.dto.UserCreateDto;
@@ -19,7 +19,7 @@ public class UserService {
 
   private final UserRepository userRepository;
   private final UserMapper userMapper;
-  private final BCryptPasswordEncoder passwordEncoder;
+  private final PasswordEncoder passwordEncoder; 
 
   public UserDto createUser(UserCreateDto dto) {
     User user = userMapper.fromDto(dto);
