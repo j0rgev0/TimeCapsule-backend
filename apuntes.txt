@@ -1,0 +1,11 @@
+@Data // Esto genera automáticamente getters, setters, toString, equals...
+@Entity // Le dice a Spring que es una entidad que se guarda en la BBDD
+@NoArgsConstructor // Genera un constructor vacío (obligatorio para JPA)
+@AllArgsConstructor // Genera un constructor con todos los atributos
+@Builder // Permite construir objetos con .builder()
+
+cosas que hacer:
+crear clase userMapper
+Crear los DTOs
+crear los servicios
+cambiar el controller

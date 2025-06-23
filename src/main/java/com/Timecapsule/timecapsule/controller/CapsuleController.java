@@ -1,6 +1,7 @@
 package com.Timecapsule.timecapsule.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -35,7 +36,7 @@ public class CapsuleController {
   }
 
   @PutMapping("/{id}")
-  public Capsule updateCapsule(@PathVariable Long id, @RequestBody Capsule c) {
+  public Capsule updateCapsule(@PathVariable UUID id, @RequestBody Capsule c) {
     c.setId(id);
     return CapsuleRepo.save(c);
   }
