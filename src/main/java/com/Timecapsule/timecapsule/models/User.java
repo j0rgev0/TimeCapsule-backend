@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@Table(name = "usuarios") // Nombre de la tabla, es importante no utilizar palabras reservadas de PostgreSQL
+@Table(name = "users") // Nombre de la tabla, es importante no utilizar palabras reservadas de PostgreSQL
 @AllArgsConstructor
 @NoArgsConstructor 
 @Builder 
