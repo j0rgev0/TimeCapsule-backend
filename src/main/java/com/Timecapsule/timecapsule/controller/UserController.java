@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.Timecapsule.timecapsule.dto.UserCreateDto;
+import com.Timecapsule.timecapsule.dto.UserDto;
 import com.Timecapsule.timecapsule.models.User;
 import com.Timecapsule.timecapsule.repository.UserRepository;
+import com.Timecapsule.timecapsule.services.UserService;
 
 @RestController
 @RequestMapping("/api/users")
@@ -24,6 +29,7 @@ public class UserController {
 
   @Autowired
   private UserRepository UserRepo;
+  private UserService UserService;
 
   @GetMapping()
   public List<User> getUsers() {
@@ -31,19 +37,25 @@ public class UserController {
   }
 
   @PostMapping()
-  public User create(@RequestBody User u) {
-    return UserRepo.save(u);
+  public ResponseEntity<UserDto> createUser(@RequestBody @Validated UserCreateDto u) {
+    UserDto created = UserService.createUser(u);
+    return ResponseEntity.ok(created);
   }
 
-  @PutMapping("/{id}")
-  public User updateUser(@PathVariable UUID id, @RequestBody User u) {
-    u.setId(id);
-    return UserRepo.save(u);
+  @GetMapping("/{id}")
+  public UserDto getUser(@PathVariable UUID id) {
+    return UserService.getUser(id);
   }
 
-  @DeleteMapping("/{id}")
-  public void deleteUser(@PathVariable Long id) {
-    UserRepo.deleteById(id);
-  }
+  // @PutMapping("/{id}")
+  // public User updateUser(@PathVariable UUID id, @RequestBody User u) {
+  //   u.setId(id);
+  //   return UserRepo.save(u);
+  // }
+
+  // @DeleteMapping("/{id}")
+  // public void deleteUser(@PathVariable UUID id) {
+  //   UserRepo.deleteById(id);
+  // }
 
 }

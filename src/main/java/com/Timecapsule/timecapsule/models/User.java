@@ -7,16 +7,20 @@ import java.util.UUID;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 // te ahorras los getters y setters
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @Table(name = "usuarios") // Nombre de la tabla, es importante no utilizar palabras reservadas de PostgreSQL
+@AllArgsConstructor
+@NoArgsConstructor 
+@Builder 
 // user, select, table, where, group, order, insert, limit, etc.
 public class User {
   @Id
@@ -29,14 +33,15 @@ public class User {
 
   @OneToMany(mappedBy = "owner")
   private List<Capsule> capsulesOwned;
-  // private image avatar;
 
-  @OneToMany
-  @JoinTable(
-    name = "user_capsule",
-    joinColumns = @JoinColumn(name = "user_id"),
-    inverseJoinColumns = @JoinColumn(name = "capsule_id")
-  )
-  private List<Capsule> capsulesShared;
-
+  
 }
+
+// MAS ADELANTE
+// private List<Capsule> capsulesShared;
+// @OneToMany
+// @JoinTable(
+//   name = "user_capsule",
+//   joinColumns = @JoinColumn(name = "user_id"),
+//   inverseJoinColumns = @JoinColumn(name = "capsule_id")
+// )

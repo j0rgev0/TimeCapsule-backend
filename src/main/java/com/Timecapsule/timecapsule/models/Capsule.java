@@ -9,7 +9,9 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
 
@@ -24,12 +26,19 @@ public class Capsule {
   private LocalDate closeDate;
   private LocalDate createAt = LocalDate.now();
 
-  @OneToMany(mappedBy = "capsule", cascade = CascadeType.ALL)
-  private List<User> users;
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  private User owner;
 
+
+  @OneToMany(mappedBy = "capsule", cascade = CascadeType.ALL)
+  private List<Image> images;
   @OneToMany(mappedBy = "capsule", cascade = CascadeType.ALL)
   private List<Video> videos;
 
-  @ManyToMany(mappedBy = "capsulesSharedWith")
-  private List<User> usersSharedWith;
 }
+
+
+// MAS ADELANTE
+// @ManyToMany(mappedBy = "capsulesSharedWith")
+// private List<User> usersSharedWith;
