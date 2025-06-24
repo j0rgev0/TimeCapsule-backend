@@ -1,6 +1,5 @@
 package com.Timecapsule.timecapsule.config;
 
-
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,9 +16,11 @@ import java.util.Arrays;
 @EnableWebMvc
 public class WebConfig {
 
+    private static final Long MAX_AGE = 3600L;
+    private static final int CORS_FILTER_ORDER = -102;
+
     @Bean
     public FilterRegistrationBean corsFilter() {
-
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
@@ -27,18 +28,18 @@ public class WebConfig {
         config.setAllowedHeaders(Arrays.asList(
                 HttpHeaders.AUTHORIZATION,
                 HttpHeaders.CONTENT_TYPE,
-                HttpHeaders.ACCEPT
-        ));
+                HttpHeaders.ACCEPT));
         config.setAllowedMethods(Arrays.asList(
                 HttpMethod.GET.name(),
                 HttpMethod.POST.name(),
                 HttpMethod.PUT.name(),
-                HttpMethod.DELETE.name()
-        ));
-        config.setMaxAge(3600L);
+                HttpMethod.DELETE.name(),
+                HttpMethod.OPTIONS.name()));
+        config.setMaxAge(MAX_AGE);
         source.registerCorsConfiguration("/**", config);
         FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
-        bean.setOrder(-102);
+
+        bean.setOrder(CORS_FILTER_ORDER);
         return bean;
     }
 }
