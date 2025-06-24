@@ -1,11 +1,17 @@
 package com.Timecapsule.timecapsule.services;
 
+import java.nio.CharBuffer;
+import java.util.Optional;
 import java.util.UUID;
 
+import com.Timecapsule.timecapsule.dto.CredentialsDto;
+import com.Timecapsule.timecapsule.exceptions.AppException;
+import com.Timecapsule.timecapsule.dto.SignUpDto;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.Timecapsule.timecapsule.dto.UserCreateDto;
 import com.Timecapsule.timecapsule.dto.UserDto;
 import com.Timecapsule.timecapsule.models.User;
 import com.Timecapsule.timecapsule.models.mappers.UserMapper;
@@ -13,25 +19,46 @@ import com.Timecapsule.timecapsule.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class UserService {
 
   private final UserRepository userRepository;
+
+  private final PasswordEncoder passwordEncoder;
+
   private final UserMapper userMapper;
-  private final PasswordEncoder passwordEncoder; 
 
-  public UserDto createUser(UserCreateDto dto) {
-    User user = userMapper.fromDto(dto);
-    user.setPassword(passwordEncoder.encode(user.getPassword()));
-    userRepository.save(user);
-    return userMapper.toDto(user);
+  public UserDto findByLogin(String login) {
+    User user = userRepository.findByLogin(login)
+            .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+    return userMapper.toUserDto(user);
   }
 
-  public UserDto getUser(UUID id) {
-    User user = userRepository.findById(id)
-    .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-    return userMapper.toDto(user);
+  public UserDto login(CredentialsDto credentialsDto){
+    User user = userRepository.findByLogin(credentialsDto.getLogin())
+     .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+
+    if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.getPassword()), user.getPassword())){
+      return userMapper.toUserDto(user);
+    }
+
+    throw new AppException("Invalid credentials", HttpStatus.BAD_REQUEST);
   }
-  
+
+  public UserDto register(SignUpDto userDto) {
+    Optional<User>optionalUser =  userRepository.findByLogin(userDto.getLogin());
+
+    if(optionalUser.isPresent()){
+      throw new AppException("User already exists", HttpStatus.BAD_REQUEST);
+    }
+
+    User user = userMapper.signUpToUser(userDto);
+
+    user.setPassword(passwordEncoder.encode(CharBuffer.wrap(userDto.getPassword())));
+
+    User savedUser =  userRepository.save(user);
+
+    return userMapper.toUserDto(savedUser);
+  }
 }

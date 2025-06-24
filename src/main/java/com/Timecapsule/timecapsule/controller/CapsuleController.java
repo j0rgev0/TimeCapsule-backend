@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.Timecapsule.timecapsule.models.Capsule;
 import com.Timecapsule.timecapsule.repository.CapsuleRepository;
 
-@RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/capsules")
-@CrossOrigin(origins = "*") 
+@RestController
 public class CapsuleController {
 
   @Autowired

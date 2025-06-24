@@ -22,7 +22,7 @@ import com.Timecapsule.timecapsule.services.UserService;
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = "*") // permite que se acceda desde cualquier origen
+@CrossOrigin(origins = "*")
 public class UserController {
 
   @Autowired
@@ -34,16 +34,10 @@ public class UserController {
     return UserRepo.findAll();
   }
 
-  @PostMapping()
-  public ResponseEntity<UserDto> createUser(@RequestBody @Validated UserCreateDto u) {
-    UserDto created = UserService.createUser(u);
-    return ResponseEntity.ok(created);
-  }
-
-  @GetMapping("/{id}")
-  public UserDto getUser(@PathVariable UUID id) {
-    return UserService.getUser(id);
-  }
+  // @GetMapping("/{id}")
+  // public UserDto getUser(@PathVariable UUID id) {
+   // return UserService.getUser(id);
+  //}
 
   // @PutMapping("/{id}")
   // public User updateUser(@PathVariable UUID id, @RequestBody User u) {
