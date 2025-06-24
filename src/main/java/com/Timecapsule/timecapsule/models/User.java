@@ -3,45 +3,43 @@ package com.Timecapsule.timecapsule.models;
 import java.util.List;
 import java.util.UUID;
 
-// necesitas JPA mvn
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-// te ahorras los getters y setters
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Data
-@Table(name = "users") // Nombre de la tabla, es importante no utilizar palabras reservadas de PostgreSQL
 @AllArgsConstructor
-@NoArgsConstructor 
-@Builder 
-// user, select, table, where, group, order, insert, limit, etc.
+@NoArgsConstructor
+@Builder
+@Data
+@Entity
+@Table(name = "users")
 public class User {
+
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
+
+  @Column(unique = true, nullable = false)
   private String name;
+
+  @Column(unique = true, nullable = false)
   private String email;
-  private String password;
+
+  @Column(nullable = false)
+  private String login;
+
+  @Column
   private String avatar;
+
+  @Column(nullable = false)
+  private String password;
 
   @OneToMany(mappedBy = "owner")
   private List<Capsule> capsulesOwned;
 
   
 }
-
-// MAS ADELANTE
-// private List<Capsule> capsulesShared;
-// @OneToMany
-// @JoinTable(
-//   name = "user_capsule",
-//   joinColumns = @JoinColumn(name = "user_id"),
-//   inverseJoinColumns = @JoinColumn(name = "capsule_id")
-// )

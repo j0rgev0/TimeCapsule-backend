@@ -1,51 +1,40 @@
 package com.Timecapsule.timecapsule.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import static org.springframework.security.config.Customizer.withDefaults;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    // Configura qué rutas están protegidas
+    private final UserAuthenticationEntryPoint userAuthenticationEntryPoint;
+    private final UserAuthProvider userAuthProvider;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        System.out.println("Configurando SecurityFilterChain...");
         http
-            .csrf(csrf -> csrf.disable()) // Desactiva CSRF para pruebas
-            .authorizeHttpRequests(auth -> auth
-                .anyRequest().authenticated() // Protege TODAS las rutas
-            )
-            .formLogin(withDefaults()); // Activa login por formulario
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/register").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Para CORS preflight
+                        .anyRequest().authenticated()
+                )
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(userAuthenticationEntryPoint)
+                )
+                .addFilterBefore(new JwtAuthFilter(userAuthProvider), BasicAuthenticationFilter.class);
 
         return http.build();
-    }
-
-    // Usuario en memoria: admin / clave123
-    @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder encoder) {
-        UserDetails user = User
-            .withUsername("admin")
-            .password(encoder.encode("clave123"))
-            .roles("ADMIN")
-            .build();
-
-        return new InMemoryUserDetailsManager(user);
-    }
-
-    // Encriptador de contraseñas
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }
