@@ -9,6 +9,6 @@ import com.Timecapsule.timecapsule.models.User;
 
 public interface UserRepository extends JpaRepository<User, UUID> {
 
-    Optional<User> findByLogin(String login);
+    Optional<User> findByEmail(String email);
 } 
   

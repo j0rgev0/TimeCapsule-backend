@@ -29,14 +29,14 @@ public class UserService {
 
   private final UserMapper userMapper;
 
-  public UserDto findByLogin(String login) {
-    User user = userRepository.findByLogin(login)
+  public UserDto findByLogin(String email) {
+    User user = userRepository.findByEmail(email)
             .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
     return userMapper.toUserDto(user);
   }
 
   public UserDto login(CredentialsDto credentialsDto){
-    User user = userRepository.findByLogin(credentialsDto.getLogin())
+    User user = userRepository.findByEmail(credentialsDto.getEmail())
      .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
 
     if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.getPassword()), user.getPassword())){
@@ -47,7 +47,7 @@ public class UserService {
   }
 
   public UserDto register(SignUpDto userDto) {
-    Optional<User>optionalUser =  userRepository.findByLogin(userDto.getLogin());
+    Optional<User>optionalUser =  userRepository.findByEmail(userDto.getEmail());
 
     if(optionalUser.isPresent()){
       throw new AppException("User already exists", HttpStatus.BAD_REQUEST);
