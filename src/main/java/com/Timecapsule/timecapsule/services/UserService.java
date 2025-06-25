@@ -47,7 +47,7 @@ public class UserService {
   }
 
   public UserDto register(SignUpDto userDto) {
-    Optional<User>optionalUser =  userRepository.findByEmail(userDto.getEmail());
+    Optional<User> optionalUser =  userRepository.findByEmail(userDto.getEmail());
 
     if(optionalUser.isPresent()){
       throw new AppException("User already exists", HttpStatus.BAD_REQUEST);
