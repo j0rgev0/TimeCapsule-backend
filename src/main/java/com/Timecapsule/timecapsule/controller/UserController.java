@@ -19,7 +19,6 @@ public class UserController {
 
   @Autowired
   private UserRepository UserRepo;
-  private UserService UserService;
 
   @GetMapping()
   public List<User> getUsers() {
