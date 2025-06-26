@@ -1,7 +1,8 @@
 package com.Timecapsule.timecapsule.services;
 
-import com.Timecapsule.timecapsule.dto.CapsuleDto;
-import com.Timecapsule.timecapsule.dto.CreateCapsuleDto;
+import com.Timecapsule.timecapsule.dto.CapsulesDtos.CapsuleDto;
+import com.Timecapsule.timecapsule.dto.CapsulesDtos.CreateCapsuleDto;
+import com.Timecapsule.timecapsule.dto.CapsulesDtos.UpdateCapsuleDto;
 import com.Timecapsule.timecapsule.exceptions.AppException;
 import com.Timecapsule.timecapsule.models.Capsule;
 import com.Timecapsule.timecapsule.models.User;
@@ -35,6 +36,13 @@ public class CapsuleService {
                 .collect(Collectors.toList());
     }
 
+    public CapsuleDto getCapsule(UUID id) {
+        Capsule capsule = capsuleRepository.findById(id)
+                .orElseThrow(() -> new AppException("Capsule not found", HttpStatus.NOT_FOUND));
+
+        return capsuleMapper.toCapsuleDto(capsule);
+    }
+
     public CapsuleDto createCapsule(CreateCapsuleDto capsuleDto, UUID id){
         Optional<Capsule> optionalCapsule = capsuleRepository.findByTitle(capsuleDto.getTitle());
 
@@ -54,5 +62,21 @@ public class CapsuleService {
         return capsuleMapper.toCapsuleDto(saveCapsule);
     }
 
+    public CapsuleDto updateCapsule(UUID id, UpdateCapsuleDto capsuleDto) {
+        Capsule existingCapsule = capsuleRepository.findById(id)
+                .orElseThrow(() -> new AppException("Capsule not found", HttpStatus.NOT_FOUND));
 
+        if (capsuleDto.getTitle() != null && !capsuleDto.getTitle().trim().isEmpty()) {
+            Optional<Capsule> optionalCapsule = capsuleRepository.findByTitle(capsuleDto.getTitle());
+            if (optionalCapsule.isPresent() && !optionalCapsule.get().getId().equals(id)) {
+                throw new AppException("Another capsule with this title already exists", HttpStatus.BAD_REQUEST);
+            }
+        }
+
+        capsuleMapper.updateCapsuleFromDto(capsuleDto, existingCapsule);
+
+        Capsule savedCapsule = capsuleRepository.save(existingCapsule);
+
+        return capsuleMapper.toCapsuleDto(savedCapsule);
+    }
 }

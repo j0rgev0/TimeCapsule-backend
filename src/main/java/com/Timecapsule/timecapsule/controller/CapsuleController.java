@@ -5,7 +5,12 @@ import java.util.List;
 import java.util.UUID;
 
 import com.Timecapsule.timecapsule.dto.*;
+import com.Timecapsule.timecapsule.dto.CapsulesDtos.CapsuleDto;
+import com.Timecapsule.timecapsule.dto.CapsulesDtos.CreateCapsuleDto;
+import com.Timecapsule.timecapsule.dto.CapsulesDtos.UpdateCapsuleDto;
+import com.Timecapsule.timecapsule.dto.ErrorDto;
 import com.Timecapsule.timecapsule.services.CapsuleService;
+import com.Timecapsule.timecapsule.exceptions.AppException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -28,27 +33,31 @@ public class CapsuleController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getCapsule(@PathVariable UUID id) {
-        CapsuleDto capsule = capsuleService.getAll().stream()
-                .filter(c -> c.getId().equals(id))
-                .findFirst()
-                .orElse(null);
-        
-        if (capsule == null) {
+        try {
+            CapsuleDto capsule = capsuleService.getCapsule(id);
+            return ResponseEntity.ok(capsule);
+        } catch (AppException e) {
             return ResponseEntity.status(404).body(new ErrorDto("Capsule not Found"));
         }
-        
-        return ResponseEntity.ok(capsule);
     }
 
     @PostMapping
     public ResponseEntity<CapsuleDto> createCapsule(@Valid @RequestBody CreateCapsuleDto createCapsuleDto) {
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDto currentUser = (UserDto) authentication.getPrincipal();
-        
 
         CapsuleDto capsule = capsuleService.createCapsule(createCapsuleDto, currentUser.getId());
 
         return ResponseEntity.created(URI.create("/api/capsules/" + capsule.getId())).body(capsule);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> updateCapsule(@PathVariable UUID id, @RequestBody UpdateCapsuleDto capsuleDto) {
+        try {
+            CapsuleDto updatedCapsule = capsuleService.updateCapsule(id, capsuleDto);
+            return ResponseEntity.ok(updatedCapsule);
+        } catch (AppException e) {
+            return ResponseEntity.status(e.getCode()).body(new ErrorDto(e.getMessage()));
+        }
     }
 }

@@ -2,12 +2,10 @@ package com.Timecapsule.timecapsule.services;
 
 import java.nio.CharBuffer;
 import java.util.Optional;
-import java.util.UUID;
 
 import com.Timecapsule.timecapsule.dto.CredentialsDto;
 import com.Timecapsule.timecapsule.exceptions.AppException;
 import com.Timecapsule.timecapsule.dto.SignUpDto;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
