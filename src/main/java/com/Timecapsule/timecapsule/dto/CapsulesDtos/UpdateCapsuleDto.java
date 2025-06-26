@@ -1,26 +1,23 @@
-package com.Timecapsule.timecapsule.dto;
 
+package com.Timecapsule.timecapsule.dto.CapsulesDtos;
 
-import com.Timecapsule.timecapsule.models.User;
-import jakarta.validation.constraints.NotBlank;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-public class CreateCapsuleDto {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class UpdateCapsuleDto {
 
-    @NotBlank(message = "Title is required")
     private String title;
 
-    @NotBlank(message = "Description is required")
     private String description;
 
     private Boolean isShared;
