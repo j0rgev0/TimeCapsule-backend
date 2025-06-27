@@ -4,19 +4,27 @@ import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
-import com.Timecapsule.timecapsule.dto.*;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.Timecapsule.timecapsule.dto.CapsulesDtos.CapsuleDto;
 import com.Timecapsule.timecapsule.dto.CapsulesDtos.CreateCapsuleDto;
 import com.Timecapsule.timecapsule.dto.CapsulesDtos.UpdateCapsuleDto;
 import com.Timecapsule.timecapsule.dto.ErrorDto;
-import com.Timecapsule.timecapsule.services.CapsuleService;
+import com.Timecapsule.timecapsule.dto.UserDto;
 import com.Timecapsule.timecapsule.exceptions.AppException;
+import com.Timecapsule.timecapsule.services.CapsuleService;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController

@@ -1,5 +1,13 @@
 package com.Timecapsule.timecapsule.services;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+
 import com.Timecapsule.timecapsule.dto.CapsulesDtos.CapsuleDto;
 import com.Timecapsule.timecapsule.dto.CapsulesDtos.CreateCapsuleDto;
 import com.Timecapsule.timecapsule.dto.CapsulesDtos.UpdateCapsuleDto;
@@ -9,14 +17,8 @@ import com.Timecapsule.timecapsule.models.User;
 import com.Timecapsule.timecapsule.models.mappers.CapsuleMapper;
 import com.Timecapsule.timecapsule.repository.CapsuleRepository;
 import com.Timecapsule.timecapsule.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
