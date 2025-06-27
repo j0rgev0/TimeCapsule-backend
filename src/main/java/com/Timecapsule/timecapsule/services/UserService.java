@@ -5,16 +5,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.Timecapsule.timecapsule.dto.CapsulesDtos.CapsuleDto;
-import com.Timecapsule.timecapsule.dto.CredentialsDto;
-import com.Timecapsule.timecapsule.exceptions.AppException;
-import com.Timecapsule.timecapsule.dto.SignUpDto;
-import com.Timecapsule.timecapsule.models.Capsule;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.Timecapsule.timecapsule.dto.CredentialsDto;
+import com.Timecapsule.timecapsule.dto.SignUpDto;
 import com.Timecapsule.timecapsule.dto.UserDto;
+import com.Timecapsule.timecapsule.exceptions.AppException;
 import com.Timecapsule.timecapsule.models.User;
 import com.Timecapsule.timecapsule.models.mappers.UserMapper;
 import com.Timecapsule.timecapsule.repository.UserRepository;
