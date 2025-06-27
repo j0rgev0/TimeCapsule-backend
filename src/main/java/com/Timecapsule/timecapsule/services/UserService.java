@@ -1,11 +1,15 @@
 package com.Timecapsule.timecapsule.services;
 
 import java.nio.CharBuffer;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import com.Timecapsule.timecapsule.dto.CapsulesDtos.CapsuleDto;
 import com.Timecapsule.timecapsule.dto.CredentialsDto;
 import com.Timecapsule.timecapsule.exceptions.AppException;
 import com.Timecapsule.timecapsule.dto.SignUpDto;
+import com.Timecapsule.timecapsule.models.Capsule;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,6 +30,12 @@ public class UserService {
   private final PasswordEncoder passwordEncoder;
 
   private final UserMapper userMapper;
+
+
+  public List<UserDto> getAll() {
+    List<User> users = userRepository.findAll();
+    return users.stream().map(userMapper::toUserDto).collect(Collectors.toList());
+  }
 
   public UserDto findByLogin(String email) {
     User user = userRepository.findByEmail(email)

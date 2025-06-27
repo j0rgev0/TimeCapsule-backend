@@ -1,6 +1,5 @@
 package com.Timecapsule.timecapsule.config;
 
-
 import com.Timecapsule.timecapsule.dto.UserDto;
 import com.Timecapsule.timecapsule.services.UserService;
 import com.auth0.jwt.JWT;
@@ -14,7 +13,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import java.util.Base64;
 import java.util.Collections;
 import java.util.Date;
 
@@ -23,35 +21,45 @@ import java.util.Date;
 public class UserAuthProvider {
 
     private final UserService userService;
-    @Value("${security.jwt.token.secret-key:secret-value}")
+
+    @Value("${security.jwt.token.secret-key}")
     private String secretKey;
 
-
-    @PostConstruct
-    protected void init() {
-        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
-
-
-    }
-    public String createToken(String login) {
+    public String createToken(String email) {
+        UserDto user = userService.findByLogin(email);
+        Algorithm algorithm = Algorithm.HMAC256(secretKey);
         Date now = new Date();
-        Date validity = new Date(now.getTime() + 3_600_000);
+        Date validity = new Date(System.currentTimeMillis() + 30 * 60 * 1000); // 30 minutos
+
         return JWT.create()
-                .withIssuer(login)
-                .withIssuedAt(now)
+                .withSubject(user.getName())
                 .withExpiresAt(validity)
-                .sign(Algorithm.HMAC256(secretKey));
+                .withIssuer(email)
+                .withIssuedAt(now)
+                .sign(algorithm);
+    }
+
+    public String refreshToken(String email) {
+        UserDto user = userService.findByLogin(email);
+        Algorithm algorithm = Algorithm.HMAC256(secretKey);
+        Date now = new Date();
+        Date validity = new Date(System.currentTimeMillis() + + 7L * 24 * 60 * 60 * 1000); // 7 dias
+
+        return JWT.create()
+                .withSubject(user.getName())
+                .withExpiresAt(validity)
+                .withIssuer(email)
+                .withIssuedAt(now)
+                .sign(algorithm);
     }
 
     public Authentication validateToken(String token) {
-        JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secretKey))
-                .build();
+        Algorithm algorithm = Algorithm.HMAC256(secretKey);
+        JWTVerifier verifier = JWT.require(algorithm).build();
+        DecodedJWT decoded = verifier.verify(token);
 
+        UserDto user = userService.findByLogin(decoded.getIssuer());
 
-       DecodedJWT decoded = verifier.verify(token);
-
-       UserDto user = userService.findByLogin(decoded.getIssuer());
-
-       return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
+        return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
     }
 }
