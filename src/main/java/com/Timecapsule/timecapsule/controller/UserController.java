@@ -35,7 +35,6 @@ public class UserController {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     UserDto currentUser = (UserDto) authentication.getPrincipal();
 
-
     return ResponseEntity.ok(currentUser);
   }
 

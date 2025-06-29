@@ -3,13 +3,7 @@ package com.Timecapsule.timecapsule.models;
 import java.util.List;
 import java.util.UUID;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -39,7 +33,7 @@ public class User {
   @Column(nullable = false)
   private String password;
 
-  @OneToMany(mappedBy = "owner")
+  @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
   private List<Capsule> capsulesOwned;
 
   

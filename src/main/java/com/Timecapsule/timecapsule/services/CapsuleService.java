@@ -81,4 +81,8 @@ public class CapsuleService {
 
         return capsuleMapper.toCapsuleDto(savedCapsule);
     }
+
+    public void deleteCapsule(UUID id){
+        capsuleRepository.deleteById(id);
+    }
 }
