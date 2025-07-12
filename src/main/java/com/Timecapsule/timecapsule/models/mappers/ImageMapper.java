@@ -9,6 +9,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface ImageMapper {
 
-    @Mapping(target = "ownerId", source = "owner.id")
+    @Mapping(target = "capsuleId", source = "capsule.id")
     ImagesDto imagesToDto(Image image);
 }
