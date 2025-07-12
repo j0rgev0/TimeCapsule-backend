@@ -13,18 +13,5 @@ public class TimecapsuleApplication {
 
 	public static void main(String[] args) throws IOException {
 		SpringApplication.run(TimecapsuleApplication.class, args);
-
-
-
-		CloudinaryConfig cloudinaryConfig = new CloudinaryConfig();
-		Cloudinary cloudinary = cloudinaryConfig.cloudinary();
-
-		Map params1 = ObjectUtils.asMap(
-				"use_filename", true,
-				"unique_filename", false,
-				"overwrite", true
-		);
-
-		cloudinary.uploader().upload("https://cloudinary-devs.github.io/cld-docs-assets/assets/images/coffee_cup.jpg", params1);
 	}
 }
