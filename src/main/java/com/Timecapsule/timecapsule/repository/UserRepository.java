@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.Timecapsule.timecapsule.models.User;
 
 public interface UserRepository extends JpaRepository<User, UUID> {
-
     Optional<User> findByEmail(String email);
 } 
   
