@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -21,6 +22,14 @@ public class UserCapsuleService {
 
     public List<UserCapsuleDto> getAll(){
         List<UserCapsule> userCapsules = userCapsuleRepository.findAll();
+
+        return userCapsules.stream()
+                .map(userCapsuleMapper::userCapsuleToDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<UserCapsuleDto> getByUserId(UUID userId){
+        List<UserCapsule> userCapsules = userCapsuleRepository.findByUserId(userId);
 
         return userCapsules.stream()
                 .map(userCapsuleMapper::userCapsuleToDto)
