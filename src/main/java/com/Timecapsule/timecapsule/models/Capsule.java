@@ -46,17 +46,13 @@ public class Capsule {
 
   private LocalDate createAt = LocalDate.now();
 
-
-
-
   @OneToMany(mappedBy = "capsule", cascade = CascadeType.ALL)
   private List<Image> images;
+
   @OneToMany(mappedBy = "capsule", cascade = CascadeType.ALL)
   private List<Video> videos;
 
+  @OneToMany(mappedBy = "capsule", cascade = CascadeType.ALL)
+  private List<UserCapsule> userCapsules;
+
 }
-
-
-// MAS ADELANTE
-// @ManyToMany(mappedBy = "capsulesSharedWith")
-// private List<User> usersSharedWith;
