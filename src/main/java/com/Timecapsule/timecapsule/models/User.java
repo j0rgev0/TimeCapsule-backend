@@ -36,5 +36,6 @@ public class User {
   @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
   private List<Capsule> capsulesOwned;
 
-  
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+  private List<UserCapsule> user;
 }
