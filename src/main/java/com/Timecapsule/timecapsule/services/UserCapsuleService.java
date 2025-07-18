@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 public class UserCapsuleService {
 
     private final UserCapsuleRepository userCapsuleRepository;
+
     private final UserCapsuleMapper userCapsuleMapper;
 
     public List<UserCapsuleDto> getAll(){
