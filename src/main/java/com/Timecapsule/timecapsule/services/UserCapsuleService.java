@@ -72,4 +72,15 @@ public class UserCapsuleService {
 
         return userCapsuleMapper.userCapsuleToDto(userCapsule);
     }
+
+    public void deleteUserCapsule(UUID capsuleId, String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
+
+        UserCapsule userCapsule = userCapsuleRepository.findByCapsuleIdAndUserId(capsuleId, user.getId())
+                .orElseThrow(() -> new AppException("The user does not exist in this capsule", HttpStatus.BAD_REQUEST));
+
+        userCapsuleRepository.delete(userCapsule);
+    }
+
 }
