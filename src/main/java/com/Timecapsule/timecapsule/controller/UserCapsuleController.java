@@ -1,15 +1,12 @@
 package com.Timecapsule.timecapsule.controller;
 
 
+import com.Timecapsule.timecapsule.dto.UserCapsulesDto.AddUserCapsuleDto;
 import com.Timecapsule.timecapsule.dto.UserCapsulesDto.UserCapsuleDto;
-import com.Timecapsule.timecapsule.models.UserCapsule;
 import com.Timecapsule.timecapsule.services.UserCapsuleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -32,5 +29,18 @@ public class UserCapsuleController {
         List<UserCapsuleDto> userCapsule = userCapsuleService.getByUserId(id);
 
         return ResponseEntity.ok(userCapsule);
+    }
+
+    @PostMapping
+    public ResponseEntity<?> createUserCapsule(@RequestBody AddUserCapsuleDto addUserCapsuleDto){
+        try{
+
+            UserCapsuleDto userCapsuleDto = userCapsuleService.createUserCapsule(addUserCapsuleDto.getEmail(), addUserCapsuleDto.getCapsuleId());
+
+            return ResponseEntity.ok(userCapsuleDto);
+        }catch (Exception e){
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
+
     }
 }
