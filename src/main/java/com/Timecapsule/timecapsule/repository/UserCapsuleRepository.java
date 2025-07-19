@@ -9,5 +9,5 @@ import java.util.UUID;
 public interface UserCapsuleRepository extends JpaRepository<UserCapsule, UUID> {
 
     List<UserCapsule> findByUserId(UUID userId);
-    UserCapsule findByCapsuleId(UUID capsuleId);
+    List<UserCapsule> findByCapsuleId(UUID capsuleId);
 }

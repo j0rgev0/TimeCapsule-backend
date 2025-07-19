@@ -1,10 +1,7 @@
 package com.Timecapsule.timecapsule.models;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.UUID;
@@ -14,6 +11,7 @@ import java.util.UUID;
 public class UserCapsule {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @ManyToOne
