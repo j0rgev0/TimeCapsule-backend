@@ -43,4 +43,14 @@ public class UserCapsuleController {
         }
 
     }
+
+    @DeleteMapping("/{capsuleId}")
+    public ResponseEntity<?> deleteUserCapsule(@PathVariable UUID capsuleId, @RequestParam String email){
+        try{
+            userCapsuleService.deleteUserCapsule(capsuleId, email);
+            return ResponseEntity.ok("User Capsule deleted successfully");
+        }catch (Exception e){
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
+    }
 }
