@@ -43,6 +43,13 @@ public class CapsuleController {
         }
     }
 
+    @GetMapping("/owner/{id}")
+    public ResponseEntity<List<CapsuleDto>> getCapsulesByOwner(@PathVariable UUID id) {
+        List<CapsuleDto> capsules = capsuleService.getCapsulesByOwner(id);
+
+        return ResponseEntity.ok(capsules);
+    }
+
     @PostMapping
     public ResponseEntity<CapsuleDto> createCapsule(@Valid @RequestBody CreateCapsuleDto createCapsuleDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

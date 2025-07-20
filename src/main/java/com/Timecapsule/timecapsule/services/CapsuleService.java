@@ -33,6 +33,7 @@ public class CapsuleService {
 
     public List<CapsuleDto> getAll() {
         List<Capsule> capsules = capsuleRepository.findAll();
+
         return capsules.stream()
                 .map(capsuleMapper::toCapsuleDto)
                 .collect(Collectors.toList());
@@ -43,6 +44,14 @@ public class CapsuleService {
                 .orElseThrow(() -> new AppException("Capsule not found", HttpStatus.NOT_FOUND));
 
         return capsuleMapper.toCapsuleDto(capsule);
+    }
+
+    public List<CapsuleDto> getCapsulesByOwner(UUID id){
+        List<Capsule> capsule = capsuleRepository.findByOwnerId(id);
+
+        return capsule.stream()
+                .map(capsuleMapper::toCapsuleDto)
+                .collect(Collectors.toList());
     }
 
     public CapsuleDto createCapsule(CreateCapsuleDto capsuleDto, UUID id){
